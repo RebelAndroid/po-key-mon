@@ -5,8 +5,10 @@ import (
 	"crypto/ed25519"
 	"encoding/base64"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -27,8 +29,26 @@ func get_key(input []byte) string {
 	return output_buffer.String()
 }
 
+type Indices struct {
+	indices [19]uint16
+}
+
+func String(i Indices) string {
+	return fmt.Sprintf("%+v", i)
+}
+
 func testHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello")
+	body := new(strings.Builder)
+	io.Copy(body, r.Body)
+	fmt.Fprintln(w, body.b)
+
+	// decoder := json.NewDecoder(r.Body)
+	// var m Indices
+	// if err := decoder.Decode(&m); err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fmt.Fprintf(w, "%s", String(m))
 }
 
 func main() {

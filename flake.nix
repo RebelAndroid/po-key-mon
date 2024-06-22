@@ -25,6 +25,7 @@
               gopls
               delve
               go-tools
+              nodejs
             ];
           };
         }
