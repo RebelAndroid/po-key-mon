@@ -1,12 +1,14 @@
 <script setup>
+import { Pokedex } from "pokeapi-js-wrapper";
 import pokemon_selector from "./components/pokemon_selector.vue"
 let fire_type_names = ["volcarona", "charizard", "emboar", "moltres", "reshiram"]
+const pokedex = new Pokedex();
 </script>
 
 <template>
   <main>
     Hello from VUE!
-    <pokemon_selector type="fire" :names = "fire_type_names"></pokemon_selector>
+    <pokemon_selector type="fire" :names = "fire_type_names" :pokedex></pokemon_selector>
   </main>
 </template>
 
