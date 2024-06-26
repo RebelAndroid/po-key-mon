@@ -1,6 +1,8 @@
 <script setup>
 import { Pokedex } from "pokeapi-js-wrapper";
 import pokemon_selector from "./components/pokemon_selector.vue"
+import { ref } from "vue";
+
 const NORMAL_POKEMON = ["pidgey", "pidgeotto", "pidgeot", "rattata", "raticate", "spearow", "fearow", "jigglypuff", "wigglytuff", "meowth", "persian", "farfetchd", "doduo", "dodrio", "lickitung", "chansey", "kangaskhan", "tauros", "ditto", "eevee", "porygon", "snorlax", "sentret", "furret", "hoothoot", "noctowl", "igglybuff", "aipom", "girafarig", "dunsparce", "teddiursa", "ursaring", "porygon2", "stantler", "smeargle", "miltank", "blissey", "zigzagoon", "linoone", "taillow", "swellow", "slakoth", "vigoroth", "slaking", "whismur", "loudred", "exploud", "azurill", "skitty", "delcatty", "spinda", "swablu", "zangoose", "castform", "kecleon", "starly", "staravia", "staraptor", "bidoof", "bibarel", "ambipom", "buneary", "lopunny", "glameow", "purugly", "happiny", "chatot", "munchlax", "lickilicky", "porygon-z", "regigigas", "arceus", "patrat", "watchog", "lillipup", "herdier", "stoutland", "pidove", "tranquill", "unfezant", "audino", "minccino", "cinccino", "deerling", "sawsbuck", "bouffalant", "rufflet", "braviary", "meloetta-aria", "bunnelby", "diggersby", "fletchling", "litleo", "pyroar", "furfrou", "helioptile", "heliolisk", "pikipek", "trumbeak", "toucannon", "yungoos", "gumshoos", "stufful", "bewear", "oranguru", "type-null", "silvally", "komala", "drampa", "skwovet", "greedent", "wooloo", "dubwool", "obstagoon", "indeedee-male", "wyrdeer", "ursaluna", "lechonk", "oinkologne", "tandemaus", "maushold", "smoliv", "dolliv", "arboliva", "squawkabilly", "shroodle", "grafaiai", "cyclizar", "farigiraf", "dudunsparce", "terapagos", "meloetta-pirouette", "kangaskhan-mega", "audino-mega", "pidgeot-mega", "lopunny-mega", "rattata-alola", "raticate-alola", "raticate-totem-alola", "gumshoos-totem", "eevee-starter", "zigzagoon-galar", "linoone-galar", "indeedee-female", "meowth-gmax", "eevee-gmax", "snorlax-gmax", "zorua-hisui", "zoroark-hisui", "oinkologne-female", "dudunsparce-three-segment", "maushold-family-of-three", "squawkabilly-blue-plumage", "squawkabilly-yellow-plumage", "squawkabilly-white-plumage", "ursaluna-bloodmoon", "terapagos-terastal", "terapagos-stellar"];
 const FIGHTING_POKEMON = ["mankey", "primeape", "poliwrath", "machop", "machoke", "machamp", "hitmonlee", "hitmonchan", "heracross", "tyrogue", "hitmontop", "combusken", "blaziken", "breloom", "makuhita", "hariyama", "meditite", "medicham", "monferno", "infernape", "riolu", "lucario", "croagunk", "toxicroak", "gallade", "pignite", "emboar", "timburr", "gurdurr", "conkeldurr", "throh", "sawk", "scraggy", "scrafty", "mienfoo", "mienshao", "cobalion", "terrakion", "virizion", "keldeo-ordinary", "chesnaught", "pancham", "pangoro", "hawlucha", "crabrawler", "crabominable", "stufful", "bewear", "passimian", "hakamo-o", "kommo-o", "buzzwole", "pheromosa", "marshadow", "clobbopus", "grapploct", "sirfetchd", "falinks", "zamazenta", "kubfu", "urshifu-single-strike", "sneasler", "quaquaval", "pawmo", "pawmot", "flamigo", "annihilape", "great-tusk", "slither-wing", "iron-hands", "iron-valiant", "koraidon", "okidogi", "meloetta-pirouette", "keldeo-resolute", "mewtwo-mega-x", "heracross-mega", "blaziken-mega", "medicham-mega", "lucario-mega", "gallade-mega", "lopunny-mega", "kommo-o-totem", "farfetchd-galar", "zapdos-galar", "zamazenta-crowned", "urshifu-rapid-strike", "machamp-gmax", "urshifu-single-strike-gmax", "urshifu-rapid-strike-gmax", "sneasel-hisui", "lilligant-hisui", "decidueye-hisui", "tauros-paldea-combat-breed", "tauros-paldea-blaze-breed", "tauros-paldea-aqua-breed", "koraidon-limited-build", "koraidon-sprinting-build", "koraidon-swimming-build", "koraidon-gliding-build"];
 const FLYING_POKEMON = ["charizard", "butterfree", "pidgey", "pidgeotto", "pidgeot", "spearow", "fearow", "zubat", "golbat", "farfetchd", "doduo", "dodrio", "scyther", "gyarados", "aerodactyl", "articuno", "zapdos", "moltres", "dragonite", "hoothoot", "noctowl", "ledyba", "ledian", "crobat", "togetic", "natu", "xatu", "hoppip", "skiploom", "jumpluff", "yanma", "murkrow", "gligar", "delibird", "mantine", "skarmory", "lugia", "ho-oh", "beautifly", "taillow", "swellow", "wingull", "pelipper", "masquerain", "ninjask", "swablu", "altaria", "tropius", "salamence", "rayquaza", "starly", "staravia", "staraptor", "mothim", "combee", "vespiquen", "drifloon", "drifblim", "honchkrow", "chatot", "mantyke", "togekiss", "yanmega", "gliscor", "pidove", "tranquill", "unfezant", "woobat", "swoobat", "sigilyph", "archen", "archeops", "ducklett", "swanna", "emolga", "rufflet", "braviary", "vullaby", "mandibuzz", "tornadus-incarnate", "thundurus-incarnate", "landorus-incarnate", "fletchling", "fletchinder", "talonflame", "vivillon", "hawlucha", "noibat", "noivern", "yveltal", "rowlet", "dartrix", "pikipek", "trumbeak", "toucannon", "oricorio-baile", "minior-red-meteor", "celesteela", "rookidee", "corvisquire", "corviknight", "cramorant", "enamorus-incarnate", "squawkabilly", "wattrel", "kilowattrel", "bombirdier", "flamigo", "iron-jugulis", "shaymin-sky", "rotom-fan", "tornadus-therian", "thundurus-therian", "landorus-therian", "charizard-mega-y", "pinsir-mega", "aerodactyl-mega", "pidgeot-mega", "rayquaza-mega", "salamence-mega", "oricorio-pom-pom", "oricorio-pau", "oricorio-sensu", "minior-orange-meteor", "minior-yellow-meteor", "minior-green-meteor", "minior-blue-meteor", "minior-indigo-meteor", "minior-violet-meteor", "minior-red", "minior-orange", "minior-yellow", "minior-green", "minior-blue", "minior-indigo", "minior-violet", "articuno-galar", "zapdos-galar", "moltres-galar", "cramorant-gulping", "cramorant-gorging", "charizard-gmax", "butterfree-gmax", "corviknight-gmax", "braviary-hisui", "enamorus-therian", "squawkabilly-blue-plumage", "squawkabilly-yellow-plumage", "squawkabilly-white-plumage"];
@@ -40,31 +42,37 @@ const DARK_COLOR     = "#624D4E"
 const FAIRY_COLOR    = "#EF70EF"
 
 const pokedex = new Pokedex();
+
 </script>
 
 <template>
   <main>
     <div class="outer">
       <div class="inner">
-        <pokemon_selector :names = "NORMAL_POKEMON" :pokedex :color ="NORMAL_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "FIGHTING_POKEMON" :pokedex :color="FIGHTING_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "FLYING_POKEMON" :pokedex :color="FLYING_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "POISON_POKEMON" :pokedex :color="POISON_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "GROUND_POKEMON" :pokedex :color="GROUND_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "ROCK_POKEMON" :pokedex :color="ROCK_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "BUG_POKEMON" :pokedex :color="BUG_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "GHOST_POKEMON" :pokedex :color="GHOST_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "STEEL_POKEMON" :pokedex :color="STEEL_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "FIRE_POKEMON" :pokedex :color="FIRE_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "WATER_POKEMON" :pokedex :color="WATER_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "GRASS_POKEMON" :pokedex :color="GRASS_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "ELECTRIC_POKEMON" :pokedex :color="ELECTRIC_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "PSYCHIC_POKEMON" :pokedex :color="PSYCHIC_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "ICE_POKEMON" :pokedex :color="ICE_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "DRAGON_POKEMON" :pokedex :color="DRAGON_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "DARK_POKEMON" :pokedex :color="DARK_COLOR"></pokemon_selector>
-        <pokemon_selector :names = "FAIRY_POKEMON" :pokedex :color="FAIRY_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 0  :names = "NORMAL_POKEMON" :pokedex :color ="NORMAL_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 1  :names = "FIGHTING_POKEMON" :pokedex :color="FIGHTING_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 2  :names = "FLYING_POKEMON" :pokedex :color="FLYING_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 3  :names = "POISON_POKEMON" :pokedex :color="POISON_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 4  :names = "GROUND_POKEMON" :pokedex :color="GROUND_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 5  :names = "ROCK_POKEMON" :pokedex :color="ROCK_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 6  :names = "BUG_POKEMON" :pokedex :color="BUG_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 7  :names = "GHOST_POKEMON" :pokedex :color="GHOST_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 8  :names = "STEEL_POKEMON" :pokedex :color="STEEL_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 9 :names = "FIRE_POKEMON" :pokedex :color="FIRE_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 10 :names = "WATER_POKEMON" :pokedex :color="WATER_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 11 :names = "GRASS_POKEMON" :pokedex :color="GRASS_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 12 :names = "ELECTRIC_POKEMON" :pokedex :color="ELECTRIC_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 13 :names = "PSYCHIC_POKEMON" :pokedex :color="PSYCHIC_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 14 :names = "ICE_POKEMON" :pokedex :color="ICE_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 15 :names = "DRAGON_POKEMON" :pokedex :color="DRAGON_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 16 :names = "DARK_POKEMON" :pokedex :color="DARK_COLOR"></pokemon_selector>
+        <pokemon_selector :index = 17 :names = "FAIRY_POKEMON" :pokedex :color="FAIRY_COLOR"></pokemon_selector>
       </div>
+    </div>
+    <div class = "outer">
+      <button @click="generateKey">Generate Key</button>
+      <label>KEY</label>
+      <button>Select Pokemon</button>
     </div>
   </main>
 </template>

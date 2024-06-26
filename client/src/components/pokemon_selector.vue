@@ -1,11 +1,21 @@
 <script setup>
 import { computed, ref } from 'vue';
+import { useSelectedStore } from '@/stores/selected';
 
-const props = defineProps(['names', 'pokedex', 'color'])
+const props = defineProps(['names', 'pokedex', 'color', 'index'])
+const store = useSelectedStore();
+
 const selected = ref(props.names[0])
 const src = ref()
 
+
+const selected_index = computed(() => {
+  let i = props.names.findIndex((element) => element === selected.value)
+  return i;
+})
+
 function update_image_src(){
+  store.indices[props.index] = selected_index.value
   props.pokedex.getPokemonByName(selected.value).then(result => {
     src.value = result.sprites.front_default
   })
