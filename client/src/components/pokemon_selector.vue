@@ -1,34 +1,29 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useSelectedStore } from '@/stores/selected';
+import { computedAsync } from '@vueuse/core';
 
 const props = defineProps(['names', 'pokedex', 'color', 'index'])
 const store = useSelectedStore();
 
-const selected = ref(props.names[0])
-const src = ref()
+const selected = defineModel();
 
 
-const selected_index = computed(() => {
-  let i = props.names.findIndex((element) => element === selected.value)
-  return i;
+const src = computedAsync(async () => {
+  let x = await props.pokedex.getPokemonByName(selected.value)
+  console.log(selected.value)
+  return x.sprites.front_default
 })
 
-function update_image_src(){
-  store.indices[props.index] = selected_index.value
-  props.pokedex.getPokemonByName(selected.value).then(result => {
-    src.value = result.sprites.front_default
-  })
-}
+selected.value = props.names[0]
 
-update_image_src()
 </script>
 
 <template>
   <main>
     <div>
     <img :src>
-    <select v-model="selected" @change="update_image_src">
+    <select v-model="selected">
       <option v-for="name in names">{{ name }}</option>
     </select>
     <span></span>

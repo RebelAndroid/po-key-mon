@@ -22,6 +22,8 @@ const DRAGON_POKEMON = ["dratini", "dragonair", "dragonite", "kingdra", "vibrava
 const DARK_POKEMON = ["umbreon", "murkrow", "sneasel", "houndour", "houndoom", "tyranitar", "poochyena", "mightyena", "nuzleaf", "shiftry", "sableye", "carvanha", "sharpedo", "cacturne", "crawdaunt", "absol", "honchkrow", "stunky", "skuntank", "spiritomb", "drapion", "weavile", "darkrai", "purrloin", "liepard", "sandile", "krokorok", "krookodile", "scraggy", "scrafty", "zorua", "zoroark", "pawniard", "bisharp", "vullaby", "mandibuzz", "deino", "zweilous", "hydreigon", "greninja", "pangoro", "inkay", "malamar", "yveltal", "incineroar", "guzzlord", "nickit", "thievul", "impidimp", "morgrem", "grimmsnarl", "obstagoon", "morpeko-full-belly", "urshifu-single-strike", "zarude", "overqwil", "meowscarada", "lokix", "maschiff", "mabosstiff", "bombirdier", "kingambit", "brute-bonnet", "iron-jugulis", "wo-chien", "chien-pao", "ting-lu", "chi-yu", "roaring-moon", "gyarados-mega", "houndoom-mega", "tyranitar-mega", "absol-mega", "sableye-mega", "sharpedo-mega", "hoopa-unbound", "rattata-alola", "raticate-alola", "raticate-totem-alola", "meowth-alola", "persian-alola", "grimer-alola", "muk-alola", "greninja-battle-bond", "greninja-ash", "moltres-galar", "zigzagoon-galar", "linoone-galar", "morpeko-hangry", "zarude-dada", "grimmsnarl-gmax", "urshifu-single-strike-gmax", "qwilfish-hisui", "samurott-hisui"];
 const FAIRY_POKEMON = ["clefairy", "clefable", "jigglypuff", "wigglytuff", "mr-mime", "cleffa", "igglybuff", "togepi", "togetic", "marill", "azumarill", "snubbull", "granbull", "ralts", "kirlia", "gardevoir", "azurill", "mawile", "mime-jr", "togekiss", "cottonee", "whimsicott", "flabebe", "floette", "florges", "spritzee", "aromatisse", "swirlix", "slurpuff", "sylveon", "dedenne", "carbink", "klefki", "xerneas", "diancie", "primarina", "cutiefly", "ribombee", "morelull", "shiinotic", "comfey", "mimikyu-disguised", "tapu-koko", "tapu-lele", "tapu-bulu", "tapu-fini", "magearna", "hatterene", "impidimp", "morgrem", "grimmsnarl", "milcery", "alcremie", "zacian", "enamorus-incarnate", "fidough", "dachsbun", "tinkatink", "tinkatuff", "tinkaton", "scream-tail", "flutter-mane", "iron-valiant", "fezandipiti", "gardevoir-mega", "mawile-mega", "floette-eternal", "altaria-mega", "audino-mega", "diancie-mega", "ninetales-alola", "mimikyu-busted", "mimikyu-totem-disguised", "mimikyu-totem-busted", "magearna-original", "ribombee-totem", "rapidash-galar", "weezing-galar", "zacian-crowned", "hatterene-gmax", "grimmsnarl-gmax", "alcremie-gmax", "enamorus-therian"];
 
+const POKEMON = [NORMAL_POKEMON, FIGHTING_POKEMON, FLYING_POKEMON, POISON_POKEMON, GROUND_POKEMON, ROCK_POKEMON, BUG_POKEMON, GHOST_POKEMON, STEEL_POKEMON, FIRE_POKEMON, WATER_POKEMON, GRASS_POKEMON, ELECTRIC_POKEMON, PSYCHIC_POKEMON, ICE_POKEMON, DRAGON_POKEMON, DARK_POKEMON, FAIRY_POKEMON];
+
 const NORMAL_COLOR   = "#9FA19F"
 const FIGHTING_COLOR = "#FF8000"
 const FLYING_COLOR   = "#81B9EF"
@@ -43,36 +45,63 @@ const FAIRY_COLOR    = "#EF70EF"
 
 const pokedex = new Pokedex();
 
+function generateKey(){
+  console.log("generate key")
+}
+
+function get_rand_u16(max) {
+    if (max > 65535) {
+      throw "max too large";
+    }
+
+    let max_safe = Math.floor(65535 / max) * max;
+
+    while (true) {
+      let x = window.crypto.getRandomValues(new Uint16Array(1));
+      if (x[0] < max_safe) {
+        return x[0] % max;
+      }
+    }
+  }
+
+function selectPokemon() {
+  // for(let i = 0; i < 18; i++) {
+  //   console.log(get_rand_u16(POKEMON[i].length))
+  // }
+}
+
+let selected = ref(["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
+
 </script>
 
 <template>
   <main>
     <div class="outer">
       <div class="inner">
-        <pokemon_selector :index = 0  :names = "NORMAL_POKEMON" :pokedex :color ="NORMAL_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 1  :names = "FIGHTING_POKEMON" :pokedex :color="FIGHTING_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 2  :names = "FLYING_POKEMON" :pokedex :color="FLYING_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 3  :names = "POISON_POKEMON" :pokedex :color="POISON_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 4  :names = "GROUND_POKEMON" :pokedex :color="GROUND_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 5  :names = "ROCK_POKEMON" :pokedex :color="ROCK_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 6  :names = "BUG_POKEMON" :pokedex :color="BUG_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 7  :names = "GHOST_POKEMON" :pokedex :color="GHOST_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 8  :names = "STEEL_POKEMON" :pokedex :color="STEEL_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 9 :names = "FIRE_POKEMON" :pokedex :color="FIRE_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 10 :names = "WATER_POKEMON" :pokedex :color="WATER_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 11 :names = "GRASS_POKEMON" :pokedex :color="GRASS_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 12 :names = "ELECTRIC_POKEMON" :pokedex :color="ELECTRIC_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 13 :names = "PSYCHIC_POKEMON" :pokedex :color="PSYCHIC_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 14 :names = "ICE_POKEMON" :pokedex :color="ICE_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 15 :names = "DRAGON_POKEMON" :pokedex :color="DRAGON_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 16 :names = "DARK_POKEMON" :pokedex :color="DARK_COLOR"></pokemon_selector>
-        <pokemon_selector :index = 17 :names = "FAIRY_POKEMON" :pokedex :color="FAIRY_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[0]"  :index = 0  :names = "NORMAL_POKEMON" :pokedex :color ="NORMAL_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[1]"  :index = 1  :names = "FIGHTING_POKEMON" :pokedex :color="FIGHTING_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[2]"  :index = 2  :names = "FLYING_POKEMON" :pokedex :color="FLYING_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[3]"  :index = 3  :names = "POISON_POKEMON" :pokedex :color="POISON_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[4]"  :index = 4  :names = "GROUND_POKEMON" :pokedex :color="GROUND_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[5]"  :index = 5  :names = "ROCK_POKEMON" :pokedex :color="ROCK_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[6]"  :index = 6  :names = "BUG_POKEMON" :pokedex :color="BUG_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[7]"  :index = 7  :names = "GHOST_POKEMON" :pokedex :color="GHOST_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[8]"  :index = 8  :names = "STEEL_POKEMON" :pokedex :color="STEEL_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[9]"  :index = 9  :names = "FIRE_POKEMON" :pokedex :color="FIRE_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[10]" :index = 10 :names = "WATER_POKEMON" :pokedex :color="WATER_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[11]" :index = 11 :names = "GRASS_POKEMON" :pokedex :color="GRASS_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[12]" :index = 12 :names = "ELECTRIC_POKEMON" :pokedex :color="ELECTRIC_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[13]" :index = 13 :names = "PSYCHIC_POKEMON" :pokedex :color="PSYCHIC_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[14]" :index = 14 :names = "ICE_POKEMON" :pokedex :color="ICE_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[15]" :index = 15 :names = "DRAGON_POKEMON" :pokedex :color="DRAGON_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[16]" :index = 16 :names = "DARK_POKEMON" :pokedex :color="DARK_COLOR"></pokemon_selector>
+        <pokemon_selector v-model = "selected[17]" :index = 17 :names = "FAIRY_POKEMON" :pokedex :color="FAIRY_COLOR"></pokemon_selector>
       </div>
     </div>
     <div class = "outer">
       <button @click="generateKey">Generate Key</button>
       <label>KEY</label>
-      <button>Select Pokemon</button>
+      <button @click="selectPokemon">Select Pokemon</button>
     </div>
   </main>
 </template>
@@ -81,8 +110,8 @@ const pokedex = new Pokedex();
 .inner {
   display: grid;
   grid-template-columns: repeat(6, 17em);
-  background-color: purple;
   gap: 1em;
+  margin: 30px;
 }
 .outer{
   display: flex;
