@@ -1,10 +1,7 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { useSelectedStore } from '@/stores/selected';
 import { computedAsync } from '@vueuse/core';
 
 const props = defineProps(['names', 'pokedex', 'color', 'index'])
-const store = useSelectedStore();
 
 const selected = defineModel();
 
