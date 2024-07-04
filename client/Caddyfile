@@ -1,0 +1,4 @@
+:80 {
+	root * dist
+	file_server
+}

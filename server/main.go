@@ -14,7 +14,7 @@ import (
 )
 
 func get_key(input []byte) string {
-	b := argon2.IDKey(input, []byte("po-key-mon-salt"), 64, 128*1024, 8, 32)
+	b := argon2.IDKey(input, []byte("po-key-mon-salt"), 32, 64*1024, 8, 32)
 
 	r := bytes.NewReader(b[:])
 	_, privkey, err := ed25519.GenerateKey(r)
@@ -29,31 +29,15 @@ func get_key(input []byte) string {
 	return output_buffer.String()
 }
 
-type Indices struct {
-	indices [19]uint16
-}
-
-func String(i Indices) string {
-	return fmt.Sprintf("%+v", i)
-}
-
 func testHandler(w http.ResponseWriter, r *http.Request) {
 	body := new(strings.Builder)
 	io.Copy(body, r.Body)
-	fmt.Fprintln(w, body.b)
-
-	// decoder := json.NewDecoder(r.Body)
-	// var m Indices
-	// if err := decoder.Decode(&m); err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Fprintf(w, "%s", String(m))
+	fmt.Fprintln(w, get_key([]byte(body.String())))
 }
 
 func main() {
 	fmt.Println(get_key([]byte("hello world")))
 
-	http.HandleFunc("/test", testHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.HandleFunc("/get_key", testHandler)
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
