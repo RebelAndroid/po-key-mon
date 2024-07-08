@@ -39,5 +39,5 @@ func main() {
 	fmt.Println(get_key([]byte("hello world")))
 
 	http.HandleFunc("/get_key", testHandler)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServe(":47001", nil))
 }

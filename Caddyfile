@@ -1,4 +1,5 @@
 :80 {
 	root * dist
+	reverse_proxy /get_key :47001
 	file_server
 }
