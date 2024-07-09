@@ -8,7 +8,6 @@ const selected = defineModel();
 
 const src = computedAsync(async () => {
   let x = await props.pokedex.getPokemonByName(selected.value)
-  console.log(selected.value)
   return x.sprites.front_default
 })
 
